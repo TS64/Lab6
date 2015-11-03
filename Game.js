@@ -2,6 +2,7 @@ var playingScene;
 var menuScene;
 var gameOverScene;
 var pauseScene;
+var quitScene;
 var ctx;
 var canvas;
 var currentScene;
@@ -12,6 +13,7 @@ function Game()
 	menuScene = new MenuScene();
 	gameOverScene = new GameOverScene();
 	pauseScene = new PauseScene();
+	quitScene = new QuitScene();
 	scene = new Scene();
 }
 
@@ -22,7 +24,7 @@ function init()
 
 Game.prototype.gameLoop = function()
 {
-	console.log("Game looping.")
+	//console.log("Game looping.")
 	window.requestAnimationFrame(game.gameLoop);
 	game.draw();
 }

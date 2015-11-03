@@ -4,12 +4,24 @@ var canvas;
 var dieButtonImg = new Image();
 var pauseButtonImg = new Image();
 var bgPlayingImg = new Image();
+var playerImg = new Image();
+var playerSpriteFrame;
 var dieButtonX;
+var dieButtonY;
 var pauseButtonX;
 var pauseButtonY;
+var bgScaleX;
+var playerX;
+var playerY;
 function PlayingScene()
 {
-	
+	dieButtonX = 800;
+	dieButtonY = 0;
+	pauseButtonX = 0;
+	pauseButtonY = 0;
+	playerSpriteFrame = 0;
+	playerX = 200;
+	playerY = 300;
 }
 
 PlayingScene.prototype = new Scene();
@@ -26,22 +38,20 @@ function initCanvas()
 
 PlayingScene.prototype.drawScene = function()
 {
-	ctx.save();
-	ctx.fillStyle = "white";
-	ctx.font = "italic 40pt Calibri";
-	ctx.textBaseline = "top";
-	ctx.fillText("This is the playing scene.", 0, 0);
-	ctx.restore();
-	console.log("Title Scene drawn")
+	playerSpriteFrame = playerSpriteFrame + 1;
+	if (playerSpriteFrame >= 6)
+		playerSpriteFrame = 0;
+	console.log("Playing Scene drawn")
 	dieButtonImg.src = "DieButton.png";
 	pauseButtonImg.src = "PauseButton.png";
 	bgPlayingImg.src = "BackgroundPlayingTemp.jpg"
-	dieButtonX = Math.round(canvas.width/2 - dieButtonImg.width/2);
-	pauseButtonX = 0;
-	pauseButtonY = 0;
+	playerImg.src = "PlayerSprite.png"
+	//dieButtonX = Math.round(canvas.width/2 - dieButtonImg.width/2);
 	ctx.drawImage(bgPlayingImg, 0, 0, canvas.width, canvas.height);
+	//(Image, StartClippingX, StartClippingY, ClipWidth, ClipHeight, xPosition, yPosition, widthOfImage, heightOfImage)
+	ctx.drawImage(playerImg, playerSpriteFrame * 22, 0, 22, 44, playerX, playerY, 44, 88);
 	ctx.drawImage(pauseButtonImg, pauseButtonX, pauseButtonY);
-	ctx.drawImage(dieButtonImg, dieButtonX, 100);
+	ctx.drawImage(dieButtonImg, dieButtonX, dieButtonY);
 }
 
 PlayingScene.prototype.pauseGame = function(e) 
@@ -62,10 +72,11 @@ PlayingScene.prototype.killGame = function(e)
 	var cursorX = e.clientX;
 	var cursorY = e.clientY;
 	if (cursorX > dieButtonX && cursorX < dieButtonX + dieButtonImg.width && 
-		cursorY > 100 && cursorY < 100 + dieButtonImg.height &&
+		cursorY > dieButtonY && cursorY < dieButtonY + dieButtonImg.height &&
 		currentSceneNum == 1)
 	{
 		currentSceneNum = 3;
+		gameOver = true;
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}	
 }
